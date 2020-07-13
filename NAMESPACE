@@ -1,0 +1,3 @@
+useDynLib(tgstat, .registration = TRUE)
+exportPattern("^[[:alpha:]]+")
+
