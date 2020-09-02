@@ -1,6 +1,7 @@
 #ifndef HASHFUNC_H_
 #define HASHFUNC_H_
 
+#include <cstdint>
 #include <functional>
 
 #ifndef BSWAP_8
@@ -26,9 +27,9 @@ namespace std
 	//      v1 | bit_reverse(v2)
 	// Yet bit_reverse requires quite some computational effort. So our hash is:
 	//      little_edian(v1) | big_endian(v2)
-	template<> struct hash< std::pair<size_t, size_t> >
+	template<> struct hash< std::pair<uint64_t, uint64_t> >
 	{
-		size_t operator()(const std::pair<size_t, size_t> &v) const {
+		uint64_t operator()(const std::pair<uint64_t, uint64_t> &v) const {
 #if (__WORDSIZE == 64)
 			return v.first ^ BSWAP_64(v.second);
 #else

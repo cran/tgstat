@@ -1,3 +1,12 @@
+# tgstat 2.3.16
+
+- Fix compilation issues on Debian.
+
+# tgstat 2.3.15
+
+- Fix compilation errors on 32-bit platforms.
+- Fix compilation and run-time issues on Solaris.
+
 # tgstat 2.3.14
 
 - Stop using non-portable bswap_32 and bswap_64.
