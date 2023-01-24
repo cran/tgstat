@@ -1,6 +1,6 @@
-b1ad7138d7c112911caed02b3e0d63ea *DESCRIPTION
+58b7b99fa37b5cf3fc7652a76b57dbce *DESCRIPTION
 9d045cc39c08d20b568644433e547a61 *NAMESPACE
-2b114056247a503878f0a40f3cdfb505 *NEWS.md
+b8cb9da73c5a148ba62f127f7e0a4075 *NEWS.md
 469e5bdaeeb3327ffa2f98f410c9a01f *R/cor.R
 fe40946bf4b677c878b4fd2893306ace *R/dist.R
 04ce0bf644dc040953bfe7b7727f309d *R/knn.R
@@ -35,7 +35,7 @@ f5342d3f60501ec3b3e616e4d62605cc *src/dist.cpp
 11675c45d0c67e79320a9b16e1be335a *src/graph2cluster.cpp
 bdd9ab13898ce9d830e31fb734cb913d *src/graph2cluster.h
 db98d401d6087f64703baf5f2f6a7108 *src/knn.cpp
-e1d840cc74362f65252f49d5ef00028a *src/matrix_tapply.cpp
+9b49a876b1d95f4ec39a46c4f26fc68b *src/matrix_tapply.cpp
 ec82d21ddb140d796abfd6c9028d8728 *src/tgstat-init.cpp
 460272708368740c7ed0d2704c5c9047 *src/tgstat.cpp
 7ab75ddc91de09c58eb345aceeff8461 *src/tgstat.h
