@@ -13,6 +13,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <cstdint>
+#include <memory>
 
 #include <R.h>
 #include <Rinternals.h>
@@ -28,6 +29,10 @@
 #endif
 
 #define TGS_EXIT_SIG SIGTERM
+
+#ifndef MAP_ANONYMOUS
+# define MAP_ANONYMOUS MAP_ANON
+#endif
 
 #include "TGLException.h"
 

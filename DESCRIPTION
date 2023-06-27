@@ -1,7 +1,7 @@
 Type: Package
 Package: tgstat
 Title: Amos Tanay's Group High Performance Statistical Utilities
-Version: 2.3.22
+Version: 2.3.24
 Authors@R: c(
     person("Michael", "Hoichman", , "misha@hoichman.com", role = "aut"),
     person("Aviezer", "Lifshitz", , "aviezer.lifshitz@weizmann.ac.il", role = c("aut", "cre"))
@@ -27,7 +27,6 @@ LazyLoad: yes
 NeedsCompilation: yes
 OS_type: unix
 RoxygenNote: 7.2.3
-SystemRequirements: C++11
-Packaged: 2023-01-24 09:29:33 UTC; aviezerl
+Packaged: 2023-06-27 08:19:44 UTC; aviezerl
 Repository: CRAN
-Date/Publication: 2023-01-24 15:40:02 UTC
+Date/Publication: 2023-06-27 11:30:02 UTC
