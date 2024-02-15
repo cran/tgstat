@@ -1,3 +1,11 @@
+# tgstat 2.3.27
+
+* Fixed URL of the package in the DESCRIPTION file.
+
+# tgstat 2.3.26
+
+* Guess `tgs.use_blas` from environment if not set.
+
 # tgstat 2.3.25
 
 * Fixed clang warnings.
