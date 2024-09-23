@@ -1,7 +1,7 @@
 Type: Package
 Package: tgstat
 Title: Amos Tanay's Group High Performance Statistical Utilities
-Version: 2.3.27
+Version: 2.3.28
 Authors@R: c(
     person("Michael", "Hoichman", , "misha@hoichman.com", role = "aut"),
     person("Aviezer", "Lifshitz", , "aviezer.lifshitz@weizmann.ac.il", role = c("aut", "cre"))
@@ -21,13 +21,14 @@ BugReports: https://github.com/tanaylab/tgstat/issues
 URL: https://tanaylab.github.io/tgstat/
 Depends: R (>= 3.5.0)
 Imports: utils
-Suggests: knitr, rmarkdown
+Suggests: knitr, rmarkdown, testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Encoding: UTF-8
 LazyLoad: yes
 NeedsCompilation: yes
 OS_type: unix
-RoxygenNote: 7.2.3
-Packaged: 2024-02-15 11:11:37 UTC; aviezerl
+RoxygenNote: 7.3.2
+Config/testthat/edition: 3
+Packaged: 2024-09-23 19:46:25 UTC; aviezerl
 Repository: CRAN
-Date/Publication: 2024-02-15 12:10:02 UTC
+Date/Publication: 2024-09-23 22:30:02 UTC
