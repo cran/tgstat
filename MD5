@@ -1,6 +1,6 @@
-50cf39532814dbe930c5d634931cc1f4 *DESCRIPTION
+f8eea7533be674cd9f676944afd7c39b *DESCRIPTION
 9d045cc39c08d20b568644433e547a61 *NAMESPACE
-6992254d0201e6c987f97bb3e57dee21 *NEWS.md
+3bece6785ac91a6d7bff7d786081f383 *NEWS.md
 469e5bdaeeb3327ffa2f98f410c9a01f *R/cor.R
 9920c83eef1574108b1f4d31ea80fbbc *R/dist.R
 04ce0bf644dc040953bfe7b7727f309d *R/knn.R
@@ -12,7 +12,7 @@ aa5e5a2cbfaea3d9b6cdbe378ac48cee *build/partial.rdb
 a526fc17196c2aec108477a211bb568f *build/vignette.rds
 ea1b4f506c9c645f08a85dbd97ed1216 *inst/doc/manual.R
 1d7fafd45a17668dc66b866126a540e3 *inst/doc/manual.Rmd
-c9b6f8995e915134446e5076f0668e1e *inst/doc/manual.html
+5087802f8e1c1af792a60ef23a496774 *inst/doc/manual.html
 cb99e03cc0fba428ba5d7db3b19779cb *man/tgs_cor.Rd
 5b65b5740c699b06f081191c6f58e5d2 *man/tgs_dist.Rd
 9335cb6819f321194298b2e7874af767 *man/tgs_finite.Rd
@@ -39,7 +39,7 @@ bdd9ab13898ce9d830e31fb734cb913d *src/graph2cluster.h
 c66b59b18d703ca3c38220968e30d58a *src/knn.cpp
 8c88626d74d486df33907d2410956de0 *src/matrix_tapply.cpp
 03c58e17032e5bdac6a903a265508858 *src/tgstat-init.cpp
-d07fe12c66d3cb0e39e1f379c55f9397 *src/tgstat.cpp
+5d149e1591cf24631c9b94bf23f45e50 *src/tgstat.cpp
 b8abff8650b947d22aa1b93cf3f8f389 *src/tgstat.h
 1f4109adfc94f0a56646b9a02bb519ea *src/utils.cpp
 dc399e4fe1f15f31551d495071447285 *tests/testthat.R
