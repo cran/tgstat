@@ -1,3 +1,4 @@
+#include <climits>
 #include <ctype.h>
 #include <dirent.h>
 #include <errno.h>
@@ -34,6 +35,18 @@
 #include <Rembedded.h>
 #include <R_ext/Parse.h>
 
+// Backward-compatible shim for R < 4.5.0
+#include <Rversion.h>
+#if R_VERSION < R_Version(4, 5, 0)
+static inline SEXP R_getVar(SEXP sym, SEXP rho, Rboolean inherits) {
+    SEXP val = inherits ? Rf_findVar(sym, rho) : Rf_findVarInFrame(sym, rho);
+    if (val == R_UnboundValue)
+        Rf_error("object '%s' not found", CHAR(PRINTNAME(sym)));
+    MARK_NOT_MUTABLE(val);
+    return val;
+}
+#endif
+
 #ifdef length
 #undef length
 #endif
@@ -61,6 +74,7 @@ int                      TGStat::s_kid_index;
 vector<pid_t>            TGStat::s_running_pids;
 TGStat::Shm             *TGStat::s_shm = (TGStat::Shm *)MAP_FAILED;
 int                      TGStat::s_fifo_fd = -1;
+string                   TGStat::s_tmpdir;
 
 TGStat *g_tgstat = NULL;
 
@@ -218,8 +232,9 @@ string TGStat::get_fifo_sem_name()
 
 string TGStat::get_fifo_name()
 {
-	char buf[100];
-    snprintf(buf, sizeof(buf), "/tmp/tgstat_fifo_%d", s_is_kid ? (int)getppid() : (int)getpid());
+	char buf[PATH_MAX];
+    const char *tmpdir = s_tmpdir.empty() ? "/tmp" : s_tmpdir.c_str();
+    snprintf(buf, sizeof(buf), "%s/tgstat_fifo_%d", tmpdir, s_is_kid ? (int)getppid() : (int)getpid());
 	return buf;
 }
 
@@ -375,6 +390,22 @@ bool TGStat::wait_for_kid(int millisecs)
             return false;
         }
 
+        // Safety check: verify children are still alive
+        for (vector<pid_t>::iterator ipid = s_running_pids.begin(); ipid != s_running_pids.end(); ) {
+            if (kill(*ipid, 0) == -1 && errno == ESRCH) {
+                vdebug("Child process %d no longer exists but was not reaped by waitpid\n", *ipid);
+                swap(*ipid, s_running_pids.back());
+                s_running_pids.pop_back();
+            } else {
+                ++ipid;
+            }
+        }
+
+        if (s_running_pids.empty() || num_running_pids > s_running_pids.size()) {
+            vdebug("still running %ld child processes (detected via kill)\n", s_running_pids.size());
+            return false;
+        }
+
         vdebug("still running %ld child processes (%d, ...)\n", s_running_pids.size(), s_running_pids.front());
 
         if (nanosleep(&timeout, &remaining))
@@ -403,6 +434,23 @@ bool TGStat::wait_for_kids(int millisecs)
 
         if (s_running_pids.empty()) {
             vdebug("No more running child processes\n");
+            return false;
+        }
+
+        // Safety check: verify that all children we're waiting for are still alive.
+        // This handles edge cases where waitpid might not reap a child (e.g. signal race conditions).
+        for (vector<pid_t>::iterator ipid = s_running_pids.begin(); ipid != s_running_pids.end(); ) {
+            if (kill(*ipid, 0) == -1 && errno == ESRCH) {
+                vdebug("Child process %d no longer exists but was not reaped by waitpid\n", *ipid);
+                swap(*ipid, s_running_pids.back());
+                s_running_pids.pop_back();
+            } else {
+                ++ipid;
+            }
+        }
+
+        if (s_running_pids.empty()) {
+            vdebug("No more running child processes (detected via kill)\n");
             return false;
         }
 
@@ -538,6 +586,19 @@ void TGStat::load_options()
         m_num_processes = min(m_num_processes, num_cores);
     } else
         m_num_processes = num_cores;
+
+    // Determine temporary directory for FIFO files.
+    // Priority: tgs_tmpdir R option > TMPDIR env var > /tmp
+    rvar = Rf_GetOption1(Rf_install("tgs_tmpdir"));
+    if (Rf_isString(rvar) && Rf_xlength(rvar) == 1) {
+        s_tmpdir = CHAR(STRING_ELT(rvar, 0));
+    } else {
+        const char *env_tmpdir = getenv("TMPDIR");
+        if (env_tmpdir && env_tmpdir[0])
+            s_tmpdir = env_tmpdir;
+        else
+            s_tmpdir = "/tmp";
+    }
 }
 
 void TGStat::rnd_seed(uint64_t seed)
@@ -750,7 +811,7 @@ void runprotect_all()
 const char *get_groot(SEXP envir)
 {
 	// no need to protect the returned value
-	SEXP groot = Rf_findVar(Rf_install("GROOT"), envir);
+	SEXP groot = R_getVar(Rf_install("GROOT"), envir, (Rboolean)TRUE);
 
 	if (!Rf_isString(groot))
 		verror("GROOT variable does not exist");
@@ -761,7 +822,7 @@ const char *get_groot(SEXP envir)
 const char *get_glib_dir(SEXP envir)
 {
 	// no need to protect the returned value
-	SEXP glibdir = Rf_findVar(Rf_install(".GLIBDIR"), envir);
+	SEXP glibdir = R_getVar(Rf_install(".GLIBDIR"), envir, (Rboolean)TRUE);
 
 	if (!Rf_isString(glibdir))
 		verror(".GLIBDIR variable does not exist");
